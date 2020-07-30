@@ -10,11 +10,10 @@ public class LoginPage {
 
     private WebDriver driver;
 
-    //Логин
     @FindBy(id="identifierId")
     private WebElement loginInput;
 
-    //Кнопка "Дальше"
+
     @FindBy(xpath = "//*[@id='identifierNext']/div/button/div[2]")
     private  WebElement nextLoginButton;
 

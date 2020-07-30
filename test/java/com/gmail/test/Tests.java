@@ -1,7 +1,9 @@
 package com.gmail.test;
 
+import com.gmail.helpers.TestConfig;
 import com.gmail.pages.InboxPage;
 import com.gmail.pages.LoginPage;
+import org.aeonbits.owner.ConfigFactory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
@@ -15,6 +17,8 @@ public class Tests {
 
     private WebDriver driver;
 
+    private TestConfig config;
+
     @BeforeClass
     public void setUp(){
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\samaeru\\Downloads\\chromedriver.exe");
@@ -22,16 +26,16 @@ public class Tests {
         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
         driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS );
         driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
+        this.config= ConfigFactory.create(TestConfig.class);
     }
 
     @Test
     public void test(){
-       int expectedMailCount = 4;
         LoginPage loginPage = new LoginPage(driver);
-        InboxPage inboxPage = loginPage.open().login("yuliyatestprofil", "yuliyatest123");
-        int actualMailsCount = inboxPage.mailsCount("Simbirsoft");
-        inboxPage.sendMail("yuliyatestprofil@gmail.com", "Simbirsoft theme", actualMailsCount);
-        Assert.assertEquals(expectedMailCount, actualMailsCount, "False");
+        InboxPage inboxPage = loginPage.open().login(config.login(), config.password());
+        Integer actualMailsCount = inboxPage.mailsCount(config.searchTheme());
+        inboxPage.sendMail(config.email(), config.sendingTheme(), config.defaultText(), actualMailsCount);
+        Assert.assertEquals(config.expectedMailCount(), actualMailsCount, "False");
     }
 
     @AfterClass

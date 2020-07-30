@@ -48,12 +48,12 @@ public class InboxPage {
         return driver.findElements(By.xpath(locator)).size();
     }
 
-    public void sendMail(String address, String theme, int count){
+    public void sendMail(String address, String theme, String text, Integer count){
         newMailButton.click();
         mailInPut.sendKeys(address);
         subjectMailInput.sendKeys(theme);
-        String text = "Найдено 4 письма" + count;
-        textMailInput.sendKeys(text);
+        String result = text.replaceAll("count", count.toString());
+        textMailInput.sendKeys(result);
         sendMailButton.click();
     }
 }
